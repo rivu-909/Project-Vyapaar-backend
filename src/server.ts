@@ -1,16 +1,21 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import cors from "cors";
+import helmet from "helmet";
 import productRoutes from "./routes/productRoutes";
 import defaultRoute from "./routes/defaultRoute";
 import authRoutes from "./routes/authRoutes";
 import errorHandler from "./middleware/errorHandler";
 import setHeaderConfig from "./middleware/setHeaderConfig";
 import { mongodbUser, mongodbPass, port } from "./constants";
+
 const app = express();
 
-app.use(bodyParser.json());
+app.use(cors());
+app.use(helmet());
 app.use(setHeaderConfig);
+app.use(bodyParser.json());
 app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
 app.use("/", defaultRoute);
