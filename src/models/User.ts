@@ -5,6 +5,8 @@ const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     phoneNumber: { type: Number, require: true },
     password: { type: String, required: true },
+    gstin: { type: String, required: true },
+    userType: { type: String, required: true },
 });
 
 const User = model<IUser>("User", userSchema);

@@ -1,13 +1,13 @@
 import { Request } from "express";
+import UserType from "./UserType";
 
-export interface CurrentUser {
+interface User {
     userId: string;
     phoneNumber: string;
     name: string;
+    userType: UserType;
 }
 
-interface IRequest extends Request {
-    user: CurrentUser;
+export default interface IRequest extends Request {
+    user: User;
 }
-
-export default IRequest;

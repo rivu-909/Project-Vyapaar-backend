@@ -1,34 +1,34 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import User from "../../models/User";
 import IError from "../../Schema/IError";
-import jwt from "jsonwebtoken";
+import { secretString } from "../../constants";
+import createError from "../../utils/createError";
+import IResponseBody from "../../Schema/IResponseBody";
 
 const login: RequestHandler = async (req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            const error: IError = new Error("Validation Failed");
-            error.statusCode = 422;
-            error.data = errors.array();
-            throw error;
+            throw createError("Validation Failed", 422, errors.array());
         }
+
         const { phoneNumber, password } = req.body;
-        const user = await User.findOne({ phoneNumber });
+        const user = await User.findOne({
+            phoneNumber: phoneNumber.substr(phoneNumber.length - 10),
+        });
+
         if (!user) {
-            const error: IError = new Error(
-                "A user with this phone number could not found"
-            );
-            error.statusCode = 401;
-            throw error;
+            throw createError("Phone Number not found", 400, [
+                { path: "phoneNumber" },
+            ]);
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            const error: IError = new Error("Wrong password");
-            error.statusCode = 401;
-            throw error;
+            throw createError("Invalid password", 401, [{ path: "password" }]);
         }
 
         const token = jwt.sign(
@@ -36,20 +36,27 @@ const login: RequestHandler = async (req, res, next) => {
                 userId: user._id.toString(),
                 userName: user.name,
                 phoneNumber,
+                userType: user.userType,
             },
-            "secretString",
-            { expiresIn: "1h" }
+            secretString,
+            { expiresIn: "12h" }
         );
 
-        res.status(200).json({
+        const responseBody: IResponseBody = {
+            statusCode: 200,
+            message: "Logged in successfully",
             token,
-            userId: user._id.toString,
-        });
+            user: { name: user.name, phoneNumber, userId: user._id.toString() },
+        };
+
+        res.status(200).json(responseBody);
     } catch (err) {
         if (!(err as IError).statusCode) {
-            (err as IError).statusCode = 500;
+            const newError = createError((err as Error).message, 500);
+            next(newError);
+        } else {
+            next(err);
         }
-        next(err);
     }
 };
 
