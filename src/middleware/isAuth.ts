@@ -13,8 +13,6 @@ interface CurrentUser {
     userType: UserType;
 }
 
-const authError = createError("User not authorized for the action", 401);
-
 const isAuth: RequestHandler = async (req, res, next) => {
     try {
         const token = req.get("Authorization");
@@ -24,7 +22,7 @@ const isAuth: RequestHandler = async (req, res, next) => {
 
         const decodedToken = jwt.verify(token, secretString) as JwtPayload;
         if (!decodedToken) {
-            throw authError;
+            throw createError("User not authorized", 401);
         }
 
         (req as IRequest).user = { ...(decodedToken as CurrentUser) };
@@ -32,7 +30,8 @@ const isAuth: RequestHandler = async (req, res, next) => {
         next();
     } catch (err) {
         if (!(err as IError).statusCode) {
-            next(authError);
+            const newError = createError((err as Error).message, 500);
+            next(newError);
         } else {
             next(err);
         }
