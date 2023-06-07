@@ -5,6 +5,7 @@ import IRequest from "../Schema/IRequest";
 import { secretString } from "../constants";
 import createError from "../utils/createError";
 import UserType from "../Schema/UserType";
+import User from "../models/User";
 
 interface CurrentUser {
     userId: string;
@@ -24,8 +25,13 @@ const isAuth: RequestHandler = async (req, res, next) => {
         if (!decodedToken) {
             throw createError("User not authorized", 401);
         }
+        const user = decodedToken as CurrentUser;
+        (req as IRequest).user = user;
 
-        (req as IRequest).user = { ...(decodedToken as CurrentUser) };
+        const userData = await User.findById(user.userId);
+        if (!userData) {
+            throw createError("User not found", 404);
+        }
 
         next();
     } catch (err) {
