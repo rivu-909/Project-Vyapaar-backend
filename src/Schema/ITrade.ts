@@ -14,6 +14,7 @@ export enum TradeType {
 }
 
 export default interface ITrade {
+    _id: Types.ObjectId;
     userId: Types.ObjectId;
     price: number;
     quantity: string;

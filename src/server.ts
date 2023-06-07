@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
 import productRoutes from "./routes/productRoutes";
+import tradeRoutes from "./routes/tradeRoutes";
 import defaultRoute from "./routes/defaultRoute";
 import authRoutes from "./routes/authRoutes";
 import errorHandler from "./middleware/errorHandler";
@@ -18,6 +19,7 @@ app.use(setHeaderConfig);
 app.use(bodyParser.json());
 app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
+app.use("/trade", tradeRoutes);
 app.use("/", defaultRoute);
 app.use(errorHandler);
 

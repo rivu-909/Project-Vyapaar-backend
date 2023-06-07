@@ -1,50 +1,43 @@
 import { RequestHandler } from "express";
-import { validationResult } from "express-validator";
 import Product from "../../models/Product";
 import IError from "../../Schema/IError";
-import IProduct from "../../Schema/IProduct";
 import IRequest from "../../Schema/IRequest";
 import IResponseBody from "../../Schema/IResponseBody";
 import UserType from "../../Schema/UserType";
 import createError from "../../utils/createError";
 
-const updateProduct: RequestHandler = async (req, res, next) => {
+const deleteTrade: RequestHandler = async (req, res, next) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            throw createError("Validation Failed", 422, errors.array());
-        }
-
+        const tradeId = req.params.tradeId;
         const productId = req.params.productId;
-        let product = await Product.findById(productId);
+
+        const product = await Product.findById(productId);
         if (!product) {
             throw createError("Product with this id doesn't exists", 404);
         }
 
-        const populatedReq = req as IRequest;
-        if (
-            product.userId.toString() !== populatedReq.user.userId ||
-            populatedReq.user.userType !== UserType.admin
-        ) {
-            throw createError("User not authorized for the action", 403);
+        const tradeIndex = product.trades.findIndex(
+            (trade) => trade._id.toString() === tradeId
+        );
+        if (tradeIndex === -1) {
+            throw createError("Trade with this id doesn't exists", 404);
         }
 
-        const updates: IProduct = req.body;
-        product.description = updates.description;
-        product.price = updates.price;
-        product.name = updates.name;
+        const populatedReq = req as IRequest;
+        if (
+            product.trades[tradeIndex].userId.toString() !==
+                populatedReq.user.userId ||
+            populatedReq.user.userType !== UserType.admin
+        ) {
+            throw createError("User not authorized for the action", 401);
+        }
 
+        product.trades.splice(tradeIndex, 1);
         await product.save();
 
         const responseBody: IResponseBody = {
             statusCode: 200,
-            message: " Product updated",
-            product: {
-                productId: product._id.toString(),
-                name: product.name,
-                description: product.description,
-                price: product.price,
-            },
+            message: "Trade deleted",
         };
 
         res.status(200).json(responseBody);
@@ -58,4 +51,4 @@ const updateProduct: RequestHandler = async (req, res, next) => {
     }
 };
 
-export default updateProduct;
+export default deleteTrade;
