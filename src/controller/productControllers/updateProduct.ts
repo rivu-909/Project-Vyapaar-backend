@@ -23,10 +23,10 @@ const updateProduct: RequestHandler = async (req, res, next) => {
 
         const populatedReq = req as IRequest;
         if (
-            product.userId.toString() !== populatedReq.user.userId ||
+            product.userId.toString() !== populatedReq.user.userId &&
             populatedReq.user.userType !== UserType.admin
         ) {
-            throw createError("User not authorized for the action", 403);
+            throw createError("User not authorized for the action", 401);
         }
 
         const updates: IProduct = req.body;

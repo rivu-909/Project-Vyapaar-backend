@@ -26,7 +26,7 @@ const deleteTrade: RequestHandler = async (req, res, next) => {
         const populatedReq = req as IRequest;
         if (
             product.trades[tradeIndex].userId.toString() !==
-                populatedReq.user.userId ||
+                populatedReq.user.userId &&
             populatedReq.user.userType !== UserType.admin
         ) {
             throw createError("User not authorized for the action", 401);
