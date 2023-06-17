@@ -1,13 +1,5 @@
 import { body } from "express-validator";
 
-function isAlpha(str: string) {
-    return /^[a-zA-Z0-9]+$/.test(str);
-}
-
-function isNumber(str: string) {
-    return /^[0-9]+$/.test(str);
-}
-
 const tradeValidation = [
     body("price").trim().notEmpty().isNumeric(),
     body("quantity").trim().notEmpty(),
@@ -19,11 +11,8 @@ const tradeValidation = [
             if (
                 firstLine.length !== 0 &&
                 district.length !== 0 &&
-                isAlpha(district) &&
                 state.length !== 0 &&
-                isAlpha(state) &&
-                pincode.length === 6 &&
-                isNumber(pincode)
+                pincode.length === 6
             ) {
                 return true;
             }

@@ -5,7 +5,7 @@ export interface Address {
     secondLine?: string;
     district: string;
     state: string;
-    pincode: number;
+    pincode: string;
 }
 
 export enum TradeType {

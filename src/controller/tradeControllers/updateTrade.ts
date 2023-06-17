@@ -36,8 +36,6 @@ const updateTrade: RequestHandler = async (req, res, next) => {
             trade.userId.toString() !== populatedReq.user.userId.toString() &&
             populatedReq.user.userType !== UserType.admin
         ) {
-            console.log(trade.userId.toString());
-            console.log(populatedReq.user.userId);
             throw createError("User not authorized for the action", 401);
         }
 
