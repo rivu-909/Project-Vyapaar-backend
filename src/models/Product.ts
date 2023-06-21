@@ -12,7 +12,7 @@ const tradeSchema = new Schema<ITrade>({
         secondLine: { type: String },
         district: { type: String, required: true },
         state: { type: String, required: true },
-        pincode: { type: Number, required: true },
+        pincode: { type: String, required: true },
     },
 });
 

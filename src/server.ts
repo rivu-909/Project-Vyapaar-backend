@@ -3,15 +3,15 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
+import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import tradeRoutes from "./routes/tradeRoutes";
-import defaultRoute from "./routes/defaultRoute";
-import authRoutes from "./routes/authRoutes";
 import requestRoutes from "./routes/requestRoutes";
+import newsRoutes from "./routes/newsRoutes";
+import defaultRoute from "./routes/defaultRoute";
 import errorHandler from "./middleware/errorHandler";
 import setHeaderConfig from "./middleware/setHeaderConfig";
 import { mongodbUser, mongodbPass, port } from "./constants";
-
 const app = express();
 
 app.use(cors());
@@ -22,6 +22,7 @@ app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
 app.use("/trade", tradeRoutes);
 app.use("/request", requestRoutes);
+app.use("/news", newsRoutes);
 app.use("/", defaultRoute);
 app.use(errorHandler);
 
