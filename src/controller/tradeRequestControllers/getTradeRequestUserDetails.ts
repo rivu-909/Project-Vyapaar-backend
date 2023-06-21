@@ -43,7 +43,7 @@ const getTradeRequestUserDetails: RequestHandler = async (req, res, next) => {
 
         const responseBody: IResponseBody = {
             statusCode: 200,
-            message: "Fetched requested user",
+            message: "Fetched requested user sharable details",
             user: {
                 name: requestedUser?.name ?? "",
                 phoneNumber: requestedUser?.phoneNumber ?? "",

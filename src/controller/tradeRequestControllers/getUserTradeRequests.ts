@@ -23,7 +23,7 @@ const getUserTradeRequests: RequestHandler = async (req, res, next) => {
 
         const responseBody: IResponseBody = {
             statusCode: 200,
-            message: "Fetched requested user",
+            message: "Fetched trade requests",
             userTradeRequest: user.tradeRequests,
         };
 
