@@ -33,11 +33,9 @@ const updateTrade: RequestHandler = async (req, res, next) => {
         const trade = product.trades[tradeIndex];
         const populatedReq = req as IRequest;
         if (
-            trade.userId.toString() !== populatedReq.user.userId.toString() &&
+            trade.userId.toString() !== populatedReq.user.userId &&
             populatedReq.user.userType !== UserType.admin
         ) {
-            console.log(trade.userId.toString());
-            console.log(populatedReq.user.userId);
             throw createError("User not authorized for the action", 401);
         }
 

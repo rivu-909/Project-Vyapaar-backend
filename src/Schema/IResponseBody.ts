@@ -1,4 +1,5 @@
 import ITrade from "./ITrade";
+import ITradeRequest from "./ITradeRequest";
 
 interface Product {
     productId: string;
@@ -9,7 +10,7 @@ interface Product {
 }
 
 interface User {
-    userId: string;
+    userId?: string;
     name: string;
     phoneNumber: string;
 }
@@ -21,4 +22,9 @@ export default interface IResponseBody {
     token?: string;
     product?: Product;
     products?: Array<Product>;
+    tradeRequest?: ITradeRequest;
+    userTradeRequest?: {
+        sent: Array<ITradeRequest>;
+        received: Array<ITradeRequest>;
+    };
 }

@@ -7,6 +7,7 @@ import productRoutes from "./routes/productRoutes";
 import tradeRoutes from "./routes/tradeRoutes";
 import defaultRoute from "./routes/defaultRoute";
 import authRoutes from "./routes/authRoutes";
+import requestRoutes from "./routes/requestRoutes";
 import errorHandler from "./middleware/errorHandler";
 import setHeaderConfig from "./middleware/setHeaderConfig";
 import { mongodbUser, mongodbPass, port } from "./constants";
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use("/auth", authRoutes);
 app.use("/product", productRoutes);
 app.use("/trade", tradeRoutes);
+app.use("/request", requestRoutes);
 app.use("/", defaultRoute);
 app.use(errorHandler);
 
