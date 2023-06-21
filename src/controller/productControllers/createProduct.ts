@@ -16,7 +16,6 @@ const createProduct: RequestHandler = async (req, res, next) => {
 
         const productBody: IProduct = {
             ...req.body,
-            trades: [],
             userId: (req as IRequest).user.userId,
         };
 
