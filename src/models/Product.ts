@@ -21,7 +21,7 @@ const productSchema = new Schema<IProduct>({
     price: { type: Number, required: true },
     description: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    trades: { type: [tradeSchema], required: true },
+    trades: { type: [tradeSchema], default: [] },
 });
 
 const Product = model<IProduct>("Product", productSchema);
