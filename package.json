@@ -21,6 +21,7 @@
         "ts-node": "^10.9.1"
     },
     "dependencies": {
+        "ably": "^1.2.40",
         "axios": "^1.4.0",
         "bcrypt": "^5.1.0",
         "body-parser": "^1.20.2",

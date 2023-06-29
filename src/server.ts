@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
 import authRoutes from "./routes/authRoutes";
+import ablyRoutes from "./routes/ablyRoutes";
 import productRoutes from "./routes/productRoutes";
 import tradeRoutes from "./routes/tradeRoutes";
 import requestRoutes from "./routes/requestRoutes";
@@ -19,6 +20,7 @@ app.use(helmet());
 app.use(setHeaderConfig);
 app.use(bodyParser.json());
 app.use("/auth", authRoutes);
+app.use("/ably", ablyRoutes);
 app.use("/product", productRoutes);
 app.use("/trade", tradeRoutes);
 app.use("/request", requestRoutes);
@@ -27,7 +29,7 @@ app.use("/", defaultRoute);
 app.use(errorHandler);
 
 // DATABASE CONNECTION
-const url = `mongodb+srv://${mongodbUser}:${mongodbPass}@projectv.5nrvym2.mongodb.net/`;
+const url = `mongodb+srv://${mongodbUser}:${mongodbPass}@projectv.5nrvym2.mongodb.net/projectV`;
 
 mongoose.connect(url).then((result) => {
     app.listen(port);
