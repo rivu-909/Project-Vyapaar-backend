@@ -7,6 +7,16 @@ const userSchema = new Schema<IUser>({
     password: { type: String, required: true },
     gstin: { type: String, required: true },
     userType: { type: String, required: true },
+    connections: {
+        type: [
+            {
+                _id: { type: Schema.Types.ObjectId, required: true },
+                phoneNumber: { type: String, required: true },
+                name: { type: String, required: true },
+            },
+        ],
+        default: [],
+    },
     tradeRequests: {
         type: {
             sent: [

@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import UserSharableInfo from "./UserSharableInfo";
 import UserType from "./UserType";
 
 export default interface IUser {
@@ -11,4 +12,5 @@ export default interface IUser {
         sent: Array<Types.ObjectId>;
         received: Array<Types.ObjectId>;
     };
+    connections: Array<UserSharableInfo>;
 }

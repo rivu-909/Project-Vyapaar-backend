@@ -6,11 +6,12 @@ interface Product {
     name: string;
     description: string;
     price: number;
-    trades?: Array<ITrade>;
+    trades: Array<ITrade>;
+    updatedAt: Date;
 }
 
 interface User {
-    userId?: string;
+    userId: string;
     name: string;
     phoneNumber: string;
 }
@@ -27,4 +28,6 @@ export default interface IResponseBody {
         sent: Array<ITradeRequest>;
         received: Array<ITradeRequest>;
     };
+    connection?: User;
+    connections?: Array<User>;
 }

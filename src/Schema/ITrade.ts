@@ -20,4 +20,6 @@ export default interface ITrade {
     quantity: string;
     type: TradeType;
     address: Address;
+    updatedAt: Date;
+    createdAt: Date;
 }

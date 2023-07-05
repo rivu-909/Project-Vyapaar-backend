@@ -6,10 +6,7 @@ import createError from "../../utils/createError";
 
 const getProducts: RequestHandler = async (req, res, next) => {
     try {
-        const products = await Product.find(
-            {},
-            { name: 1, price: 1, description: 1 }
-        );
+        const products = await Product.find();
 
         const responseBody: IResponseBody = {
             statusCode: 200,
@@ -19,6 +16,8 @@ const getProducts: RequestHandler = async (req, res, next) => {
                 name: product.name,
                 description: product.description,
                 price: product.price,
+                trades: product.trades,
+                updatedAt: product.updatedAt,
             })),
         };
 

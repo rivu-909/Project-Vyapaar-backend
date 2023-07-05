@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import Product from "../../models/Product";
 import TradeRequest from "../../models/TradeRequest";
 import User from "../../models/User";
 import IError from "../../Schema/IError";
@@ -8,7 +7,7 @@ import IResponseBody from "../../Schema/IResponseBody";
 import RequestStatus from "../../Schema/RequestStatus";
 import createError from "../../utils/createError";
 
-const getTradeRequestUserDetails: RequestHandler = async (req, res, next) => {
+const connectUser: RequestHandler = async (req, res, next) => {
     try {
         const tradeRequestId = req.params.tradeRequestId;
         const tradeRequest = await TradeRequest.findById(tradeRequestId);
@@ -24,17 +23,26 @@ const getTradeRequestUserDetails: RequestHandler = async (req, res, next) => {
             throw createError("User not authorized for the action", 401);
         }
 
+        const users = await User.find({
+            $or: [{ _id: senderId }, { _id: receiverId }],
+        }).select({ name: 1, phoneNumber: 1, connections: 1 });
+
+        const addConnection = async (i: number, j: number) => {
+            const connection = users[i].connections.find(
+                (c) => c._id.toString() === users[j]._id.toString()
+            );
+            if (!connection) {
+                users[i].connections.push(users[j]);
+                await users[i].save();
+            }
+        };
         let requestedUser;
-        if (userId === receiverId) {
-            requestedUser = await User.findById(senderId, {
-                name: 1,
-                phoneNumber: 1,
-            });
+        if (users[0]._id.toString() === userId) {
+            requestedUser = users[1];
+            await addConnection(0, 1);
         } else {
-            requestedUser = await User.findById(receiverId, {
-                name: 1,
-                phoneNumber: 1,
-            });
+            requestedUser = users[0];
+            await addConnection(1, 0);
         }
 
         if (tradeRequest.status !== RequestStatus.Accepted) {
@@ -44,7 +52,8 @@ const getTradeRequestUserDetails: RequestHandler = async (req, res, next) => {
         const responseBody: IResponseBody = {
             statusCode: 200,
             message: "Fetched requested user sharable details",
-            user: {
+            connection: {
+                userId: requestedUser?._id.toString() ?? "",
                 name: requestedUser?.name ?? "",
                 phoneNumber: requestedUser?.phoneNumber ?? "",
             },
@@ -61,4 +70,4 @@ const getTradeRequestUserDetails: RequestHandler = async (req, res, next) => {
     }
 };
 
-export default getTradeRequestUserDetails;
+export default connectUser;

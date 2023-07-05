@@ -6,6 +6,8 @@ import IResponseBody from "../../Schema/IResponseBody";
 import UserType from "../../Schema/UserType";
 import createError from "../../utils/createError";
 
+// NOT USED BY CLIENT
+
 const deleteProduct: RequestHandler = async (req, res, next) => {
     try {
         const productId = req.params.productId;

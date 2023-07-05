@@ -14,15 +14,38 @@ const createTradeRequest: RequestHandler = async (req, res, next) => {
         const receiverId = req.body.receiverId;
         const senderId = (req as IRequest).user.userId;
 
+        const users = await User.find({
+            $or: [{ _id: senderId }, { _id: receiverId }],
+        }).select({ name: 1, tradeRequests: 1 });
+
+        const sender =
+            users[0]._id.toString() === senderId ? users[0] : users[1];
+        const receiver =
+            users[0]._id.toString() === receiverId ? users[0] : users[1];
+
         const newTradeRequest = new TradeRequest({
             senderId,
+            senderName: sender.name,
             receiverId,
+            receiverName: receiver.name,
             tradeId,
             productId,
             status: RequestStatus.Pending,
         });
 
-        await newTradeRequest.save();
+        if (sender) {
+            sender.tradeRequests.sent.push(newTradeRequest._id);
+        }
+
+        if (receiver) {
+            receiver.tradeRequests.received.push(newTradeRequest._id);
+        }
+
+        await Promise.all([
+            newTradeRequest.save(),
+            sender.save(),
+            receiver.save(),
+        ]);
 
         const responseBody: IResponseBody = {
             statusCode: 201,
@@ -30,17 +53,6 @@ const createTradeRequest: RequestHandler = async (req, res, next) => {
             tradeRequest: newTradeRequest,
         };
 
-        const sender = await User.findById(senderId);
-        if (sender) {
-            sender.tradeRequests.sent.push(newTradeRequest._id);
-            await sender.save();
-        }
-
-        const receiver = await User.findById(receiverId);
-        if (receiver) {
-            receiver.tradeRequests.received.push(newTradeRequest._id);
-            await receiver.save();
-        }
         res.send(responseBody);
     } catch (err) {
         if (!(err as IError).statusCode) {
