@@ -56,6 +56,7 @@ const updateTrade: RequestHandler = async (req, res, next) => {
                 description: product.description,
                 price: product.price,
                 trades: product.trades,
+                updatedAt: product.updatedAt,
             },
         };
 

@@ -6,6 +6,8 @@ import IResponseBody from "../../Schema/IResponseBody";
 import UserType from "../../Schema/UserType";
 import createError from "../../utils/createError";
 
+// NOT USED BY CLIENT (WILL BE IMPLEMENTED)
+
 const deleteTrade: RequestHandler = async (req, res, next) => {
     try {
         const tradeId = req.params.tradeId;

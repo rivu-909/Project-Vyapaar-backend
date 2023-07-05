@@ -7,4 +7,6 @@ export default interface IProduct {
     description: string;
     userId: Types.ObjectId;
     trades: Array<ITrade>;
+    updatedAt: Date;
+    createdAt: Date;
 }

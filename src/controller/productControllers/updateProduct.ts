@@ -8,6 +8,8 @@ import IResponseBody from "../../Schema/IResponseBody";
 import UserType from "../../Schema/UserType";
 import createError from "../../utils/createError";
 
+// NOT USED BY CLIENT
+
 const updateProduct: RequestHandler = async (req, res, next) => {
     try {
         const errors = validationResult(req);
@@ -44,6 +46,8 @@ const updateProduct: RequestHandler = async (req, res, next) => {
                 name: product.name,
                 description: product.description,
                 price: product.price,
+                trades: product.trades,
+                updatedAt: product.updatedAt,
             },
         };
 

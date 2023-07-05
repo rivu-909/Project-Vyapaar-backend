@@ -4,6 +4,8 @@ import IError from "../../Schema/IError";
 import IResponseBody from "../../Schema/IResponseBody";
 import createError from "../../utils/createError";
 
+// NOT USED BY CLIENT
+
 const getProductDetails: RequestHandler = async (req, res, next) => {
     try {
         const productId = req.params.productId;
@@ -22,6 +24,7 @@ const getProductDetails: RequestHandler = async (req, res, next) => {
                 description: product.description,
                 price: product.price,
                 trades: product.trades,
+                updatedAt: product.updatedAt,
             },
         };
 

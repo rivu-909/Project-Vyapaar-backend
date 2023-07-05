@@ -17,6 +17,7 @@ const createProduct: RequestHandler = async (req, res, next) => {
         const productBody: IProduct = {
             ...req.body,
             userId: (req as IRequest).user.userId,
+            lastUpdated: new Date(),
         };
 
         const product = new Product(productBody);
@@ -30,6 +31,8 @@ const createProduct: RequestHandler = async (req, res, next) => {
                 name: product.name,
                 description: product.description,
                 price: product.price,
+                updatedAt: product.updatedAt,
+                trades: [],
             },
         };
 
