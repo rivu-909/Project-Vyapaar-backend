@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import Product from "../../models/Product";
-import IError from "../../Schema/IError";
 import IResponseBody from "../../Schema/IResponseBody";
 import createError from "../../utils/createError";
 

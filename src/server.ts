@@ -29,7 +29,7 @@ app.use("/", defaultRoute);
 app.use(errorHandler);
 
 // DATABASE CONNECTION
-const url = `mongodb+srv://${mongodbUser}:${mongodbPass}@projectv.5nrvym2.mongodb.net/projectV`;
+const url = `mongodb+srv://${mongodbUser}:${mongodbPass}@projectv.5nrvym2.mongodb.net/`;
 
 mongoose.connect(url).then((result) => {
     app.listen(port);
