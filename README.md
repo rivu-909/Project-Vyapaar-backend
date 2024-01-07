@@ -1,3 +1,14 @@
+# Description
+
+-   This is the server side of Project-Vyapaar
+-   Provide a server to Bid Ask the prices for regular commodities.
+
+## Key features
+
+-   Typescript Node.js backend
+-   Ably for RTS
+-   tokens for secure communication
+
 ## Endpoints
 
 -   base/auth/signUp
